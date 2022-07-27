@@ -2,12 +2,16 @@ import streamlit as st
 from fake_useragent import UserAgent
 import requests
 import pandas as pd
-import json
+#import json
+
+
 
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
 state_response = requests.get(f"https://cdn-api.co-vin.in/api/v2/admin/location/states",headers=header)
-states = json.loads(state_response.content)
+state_response.raise_for_status() 
+if state_response.status_code != 204:
+    state = state_response.json()
 states_dict = {}
 states_dict['0'] = ' '
 for i in states['states']:
@@ -32,7 +36,9 @@ def get_table_download_link(df,filename,text):
 
 def get_districts(key):
     district_response = requests.get(f"https://cdn-api.co-vin.in/api/v2/admin/location/districts/{key}", headers=header)
-    district = json.loads(district_response.content)
+    district_response.raise_for_status() 
+    if district_response.status_code != 204:
+        district = district_response.json()
     district_dict = {}
     district_dict['0'] = ' '
     for i in district['districts']:

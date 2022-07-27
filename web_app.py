@@ -2,7 +2,6 @@ import streamlit as st
 from fake_useragent import UserAgent
 import requests
 import pandas as pd
-import base64
 
 ua = UserAgent()
 header = {'User-Agent': str(ua.chrome)}
@@ -26,10 +25,8 @@ def get_table_download_link(df,filename,text):
     in:  dataframe
     out: href string
     """
-    csv = df.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
-    # href = f'<a href="data:file/csv;base64,{b64}">Download Report</a>'
-    href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">{text}</a>'
+    file = df.to_csv(index=False, encoding = 'UTF-8')
+    href = f'<a href="data:file/csv;{file}" download="{filename}">{text}</a>'
     return href
 
 def get_districts(key):

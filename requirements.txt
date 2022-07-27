@@ -1,5 +1,7 @@
+python == 2.7
 streamlit 
 fake_useragent 
 UserAgent
 requests
 pandas 
+base64
